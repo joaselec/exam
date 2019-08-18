@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Logout{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+    <div class="row">
+        <div class="col-md-8 panel panel-default">
+            <div class="alert alert-info">
+                You have been successfully logged out.
+            </div>    
+            <a class="btn btn-primary" href="{% url 'login' %}">Click to Login</a>
+            
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+    {% else %}
+        <meta http-equiv="refresh" content="0; url=/"></meta>
+    {% endif %}
+    
+
+
+
+{% endblock %}

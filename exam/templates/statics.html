@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Exam{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>    
+                <tr> 
+                    <th>ID</th>    
+                    <th>구분</th>    
+                    <th>틀린횟수</th>    
+                </tr>    
+            </thead>    
+            <tbody id="AddOption">
+                {% for post in posts %}
+                    <tr>
+                        <td>{{post.0}}</td>
+                        <td>{{post.1}}</td>
+                        <td>{{post.2}}</td>
+                    </tr>
+                {% endfor %}  
+            </tbody>    
+        </table>
+    </div>
+    
+    <div class = "pagination" style="position: absolute; left: 20px; top: 600px;">
+        <span class = "step-links">            
+            <ul class = "pagination">
+                {% if posts.has_previous %}
+                <li><a href="?page=1">front</a></li>
+                <li><a href="?page={{posts.previous_page_number}}">prev</a></li>
+                {% endif %}
+                <li><span>Page {{posts.number}} of {{posts.paginator.num_pages}}</span></li>
+                {% if posts.has_next %}
+                <li><a href="?page={{posts.next_page_number}}">next</a></li>
+                <li><a href="?page={{posts.paginator.num_pages}}">last</a></li>
+                {% endif %}
+            </ul>
+        </span>
+    </div>
+    
+    
+    {% else %}
+        <meta http-equiv="refresh" content="0; url=accounts/login"></meta>
+    {% endif %}
+
+{% endblock %}

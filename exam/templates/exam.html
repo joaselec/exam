@@ -3,23 +3,10 @@
 {% block title %}Exam{% endblock %}
 
 {% block content %}
-    
-    <!--
-    <div class="page-header">
-        {% for lotto in lottos %}
-        <li>{{lotto.update_date}}</li>
-        {% endfor %}
-        <h1>My Lotto Page</h1>
-    </div>
-    -->
 
-    <!--
-    <button type="button" class="btn btn-primary" id="modal_show">
-        JQUERY를 이용한 모달 열기
-    </button>
-    -->
-
-    <!-- Modal --> 
+    {% if user.is_authenticated %}
+ 
+ 
     <div class="modal fade" id="examModal" tabindex="-1" role="dialog" aria-labelledby="examModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -54,12 +41,12 @@
 
         <h3>결함 사례</h3>
         <div class="well" id="case">
-            <div class="row-fluid">{{exam_content}}</div>
+            <div class="row-fluid">{{example_content}}</div>
         </div>
         
         <div class="row" style="min-height:600px;">            
             <div class="col-sm-12">
-                <h3>보호대책 요구사항</h3>
+                <h3>요구사항</h3>
             </div>        
         <!--<div class="row">-->
             <div class="col-xs-6">
@@ -300,11 +287,18 @@
                 $("#examModal").modal("show");
                 $("#examModalLabel").html("오답입니다!");
             }
+            send_result(cat_case);
         }
         function get_title_content(title_id){
             $.get("/get_title_content",{"title_id":title_id},function(data){
                 $("#ModalContent").html(title_id+" "+data.false_title_name+": "+data.false_title_content);
             },"json");
+        }
+        function send_result(select_id){
+            $.get("/sendResult",{ 
+                "select_id":select_id,"example_id":"{{example_id}}"
+                },function(data, status) { console.log(data + ":" + status); },
+                "json");
         }
         function toggle(){
             $("#test").hide();
@@ -314,5 +308,11 @@
             $("#" + divId).toggle();
         }
     </script>
-    
+
+
+    {% else %}
+        <meta http-equiv="refresh" content="0; url=accounts/login"></meta>
+    {% endif %}
+
+
 {% endblock %}
