@@ -25,7 +25,7 @@ SECRET_KEY = '-t=dish$h^4y3*x%)!jeti80dask4vu(&$lc#^&nwu_cy=t3^*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition

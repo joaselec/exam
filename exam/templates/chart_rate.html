@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}chart{% endblock %}
+
+{% block head %}
+    <script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript" src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script type="text/javascript" src="https://code.highcharts.com/modules/data.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+        <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <script type="text/javascript">
+            $.get('/data', function(jsondata) {
+                Highcharts.chart('container', {
+                    title: {
+                        text: '정답률추이' 
+                    },
+                    chart: {
+                        type: 'line'
+                    },
+                    xAxis: {
+                        title:{
+                            text: '일자' //X축이름
+                        },
+                    },
+                    yAxis: {
+                        title:{ 
+                            text: '정답률' //Y축 이름
+                        },
+                    },
+                    data: jsondata,
+                });
+            });
+        </script>
+    {% else %}
+        <meta http-equiv="refresh" content="0; url=/accounts/login"></meta>
+    {% endif %}
+
+{% endblock %}

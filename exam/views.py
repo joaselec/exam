@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 import sqlite3
 import json
 from django.core import serializers
@@ -6,12 +6,77 @@ from django.http import HttpResponse, JsonResponse
 from exam.models import result
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-def statics(request):
+
+def statics_false(request):
+    try:
+        user_name = request.user.username
+        conn = sqlite3.connect("first.db")
+        cur = conn.cursor()
+        sql = """
+                select example_id || " " || b.content, a.select_id || " " || c.name, a.title_id || " " || d.name  ,date
+                from exam_result a, TB_EXAM b, TB_TITLE c, TB_TITLE d
+                where a.example_id = b.id
+                and check_YN = 'N'
+                and a.select_id = c.id
+                and a.title_id = d.id
+                and a.user_name = ?
+                group by title_id, example_id
+                order by a.date desc, a.title_id, a.example_id
+            """
+        cur.execute(sql, (user_name,))
+        statics_list = cur.fetchall()
+        size = 10
+        paginator = Paginator(statics_list,size)
+        page = request.GET.get('page')
+        posts = paginator.get_page(page)
+        context = {
+            "posts" : posts,
+        }
+    finally:
+        conn.close()
     
+    return render(request, "statics_false.html", context)
+
+def data(request):
     user_name = request.user.username
     conn = sqlite3.connect("first.db")
     cur = conn.cursor()
-    sql = "select title_id, name, count(*) as cnt from (select a.title_id, b.name from exam_result a, TB_TITLE b where a.user_name = ? and a.title_id=b.id and a.check_yn = 'N') group by title_id order by cnt DESC"
+    sql = """
+            select date, round(false*1.0/total*100)
+            from (select date, count(date) as false, (select count(a.date) from exam_result a where a.date = b.date) as total
+            from exam_result b
+            where user_name = ?
+            and check_YN = 'Y'
+            group by date)               
+        """
+    cur.execute(sql, (user_name,))
+    rows = cur.fetchall()
+    dates = ['일자', ]
+    rates = ['정답률',]
+    for row in rows:
+        dates.append("'"+row[0][2:])
+        rates.append(row[1])
+    data = {
+        'columns':[
+            dates,
+            rates,
+        ]
+    }
+    return HttpResponse(json.dumps(data),content_type="text/json")
+
+def chart_rate(request):
+    return render(request, "chart_rate.html")
+
+
+def statics(request):    
+    user_name = request.user.username
+    conn = sqlite3.connect("first.db")
+    cur = conn.cursor()
+    sql = """
+            select title_id || " " || name, count(*) as cnt 
+            from (select a.title_id, b.name from exam_result a, TB_TITLE b where a.user_name = ? and a.title_id=b.id and a.check_yn = 'N') 
+            group by title_id order by cnt DESC
+        """
     cur.execute(sql, (user_name,))
     statics_list = cur.fetchall()
     size = 10

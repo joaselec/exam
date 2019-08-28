@@ -9,8 +9,10 @@
         <table class="table table-bordered table-hover">
             <thead>    
                 <tr> 
-                    <th>틀린문제</th>      
-                    <th>틀린횟수</th>    
+                    <th width="50%">틀린문제</th>    
+                    <th width="20%">선택한답</th>    
+                    <th width="20%">정답</th>    
+                    <th width="10%">일자</th>    
                 </tr>    
             </thead>    
             <tbody id="AddOption">
@@ -18,13 +20,15 @@
                     <tr>
                         <td>{{post.0}}</td>
                         <td>{{post.1}}</td>
+                        <td>{{post.2}}</td>
+                        <td>{{post.3}}</td>
                     </tr>
                 {% endfor %}  
             </tbody>    
         </table>
     </div>
     
-    <div class = "pagination" style="position: absolute; left: 20px; top: 600px;">
+    <div class = "pagination" >
         <span class = "step-links">            
             <ul class = "pagination">
                 {% if posts.has_previous %}
