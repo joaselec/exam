@@ -7,7 +7,7 @@ db.sqlite3
 /static
 .DS_Store
 /.vscode
+/exam/static
 
-$ pip3 install virtualenv virtualenvwrapper
 
 

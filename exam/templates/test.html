@@ -1,0 +1,46 @@
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <link href="{% static 'assets/css/handsontable.full.min.css' %}" rel="stylesheet">
+    <link href="{% static 'site.css' %}" rel="stylesheet">
+    <script src="{% static 'assets/js/libs/handsontable.full.min.js' %}"></script>
+    <script src="{% static 'assets/js/libs/handsontable.full.min.js' %}"></script>    
+</head>     
+
+
+<div class="card-block">
+    <p class="deck">
+        <a href="{% url 'handsontable:record-new' %}">신규등록</a>
+    </p>
+    <p>
+        <table class="table">
+            <tr>
+                <th><th>
+                <th>갱신일시</th>
+                <th>조작</th>
+            </tr>
+            {% for record in object_list %}
+                <tr>
+                    <td></tD>
+                    <td>{{ record.id }} </td>
+                    <td>{{ record.update_at }}</td>
+                    <td><a href="{% url 'handsontable:record-edit' record.id %}">편집</a></td>
+                </tr>
+            {% endfor %}
+        </table>    
+    </p>
+</div>
+
+
+<script>
+    var data = [
+        ['aa', 28],
+        ['bb', 19],
+        ['cc', 25]
+    ];
+ 
+    var grid = document.getElementById('grid');
+    
+    new Handsontable(grid, {data: data});
+</script>

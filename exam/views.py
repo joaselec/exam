@@ -1,11 +1,67 @@
 from django.shortcuts import render, render_to_response
 import sqlite3
 import json
+import openpyxl
+import os
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from exam.models import result
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils import timezone
+from exam.models import Header, Detail
+from django.db import transaction
+from datetime import datetime
 
+
+    
+def download(request):
+    try:
+        user_name = request.user.username
+        conn = sqlite3.connect("first.db")
+        cur = conn.cursor()
+        sql = """
+                select example_id || " " || b.content, a.select_id || " " || c.name, a.title_id || " " || d.name  ,date
+                from exam_result a, TB_EXAM b, TB_TITLE c, TB_TITLE d
+                where a.example_id = b.id
+                and check_YN = 'N'
+                and a.select_id = c.id
+                and a.title_id = d.id
+                and a.user_name = ?
+                group by title_id, example_id
+                order by a.date desc, a.title_id, a.example_id
+            """
+        cur.execute(sql, (user_name,))
+        rows = cur.fetchall()
+
+        #wb = openpyxl.load_workbook()
+        wb = openpyxl.Workbook()
+        sheet = wb.active
+        sheet.title = '틀린문항'
+
+        sheet.cell(row = 1, column = 1, value = '문제')
+        sheet.cell(row = 1, column = 2, value = '선택한답')
+        sheet.cell(row = 1, column = 3, value = '정답')
+        sheet.cell(row = 1, column = 4, value = '날짜')
+        
+        for i in range(len(rows)):
+            for j in range(len(rows[i])):
+                sheet.cell(row = i+2, column = j+1, value = rows[i][j])           
+
+        wb.save('result.xlsx')
+        wb.close()
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        filepath = os.path.join(BASE_DIR, 'result.xlsx')
+        filename = os.path.basename(filepath)
+
+        with open(filepath, 'rb') as f:
+            response = HttpResponse(f, content_type="application/vnd.ms-excel")
+            response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
+
+    finally:
+        conn.close()
+        
+
+    return response
 
 def statics_false(request):
     try:
@@ -66,6 +122,12 @@ def data(request):
 
 def chart_rate(request):
     return render(request, "chart_rate.html")
+
+def test(request):    
+    new_header = Header(update_at = timezone.now())
+    new_header.save()    
+
+    return render(request, "test.html")
 
 
 def statics(request):    
@@ -165,7 +227,8 @@ def sendResult(request):
     example_id = request.GET["example_id"]
     session_id = request.session.session_key
     user_name = request.user.username
-    date = request.user.last_login.strftime('%Y%m%d')
+    #date = request.user.last_login.strftime('%Y%m%d')
+    date = datetime.now().strftime('%Y%m%d')
     if example_id[5] != ".": 
         title_id = example_id[0:6]
     else:
@@ -175,8 +238,24 @@ def sendResult(request):
         check_yn = 'Y'
     else :
         check_yn = 'N'
-    
-    result(select_id=select_id, title_id = title_id, example_id=example_id, session_id=session_id, user_name=user_name, date=date, check_yn=check_yn).save()
+    try:
+        conn = sqlite3.connect("first.db")
+        cur = conn.cursor()
+        sql = """
+            insert into exam_result(select_id, title_id, example_id, session_id, user_name, date, check_yn)
+            values(?,?,?,?,?,?,?)
+        """
+
+        cur.execute(sql,(select_id, title_id, example_id, session_id, user_name, date, check_yn))
+        conn.commit()
+    except:
+       conn.rollback()
+       print("error")
+
+    #result(select_id=select_id, title_id = title_id, example_id=example_id, session_id=session_id, user_name=user_name, date=date, check_yn=check_yn).save()
+    finally:
+        conn.close()
+
     return JsonResponse({
     }, json_dumps_params = {'ensure_ascii': True})
     # finally:

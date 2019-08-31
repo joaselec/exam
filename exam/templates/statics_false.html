@@ -5,6 +5,33 @@
 {% block content %}
 
     {% if user.is_authenticated %}
+    {% load static %}
+    <style>
+        input {
+            vertical-align: middle;
+        }
+        input.form-text {
+            border: 1px solid #bcbcbc;
+            height: 28px;
+        }
+        input.img-button {
+            background: url( "{% static 'image/button.png' %}" ) no-repeat;
+            border: none;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function download_click() {
+            $("#download").click(function() {
+                location.href = "/download";
+            });
+        }        
+    </script>
+    <input type="button" id="download" class="img-button" style="float:right" onclick="download_click();" />
+    <br><br>
+    
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
             <thead>    
