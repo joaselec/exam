@@ -11,8 +11,11 @@ from django.utils import timezone
 from exam.models import Header, Detail
 from django.db import transaction
 from datetime import datetime
+import logging
 
 
+
+logger = logging.getLogger(__name__)
     
 def download(request):
     try:
