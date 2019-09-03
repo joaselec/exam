@@ -8,15 +8,25 @@ from django.http import HttpResponse, JsonResponse
 from exam.models import result
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
-from exam.models import Header, Detail
 from django.db import transaction
 from datetime import datetime
 import logging
+from django.contrib.auth.models import Permission, User
+from django.shortcuts import get_object_or_404
 
 
 
 logger = logging.getLogger(__name__)
-    
+
+def board(request):
+    try:
+        context = {
+
+        }
+    finally:
+        print("finish")
+    return render(request, "board.html", context)
+
 def download(request):
     try:
         user_name = request.user.username
@@ -68,6 +78,8 @@ def download(request):
 
 def statics_false(request):
     try:
+        if request.user.has_perm('test'):
+            print("has perm")
         user_name = request.user.username
         conn = sqlite3.connect("first.db")
         cur = conn.cursor()
@@ -126,11 +138,7 @@ def data(request):
 def chart_rate(request):
     return render(request, "chart_rate.html")
 
-def test(request):    
-    new_header = Header(update_at = timezone.now())
-    new_header.save()    
 
-    return render(request, "test.html")
 
 
 def statics(request):    

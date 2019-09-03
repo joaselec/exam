@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'exam',
     'accounts',
+    'knox',
+    'board',
 ]
 
 MIDDLEWARE = [
@@ -172,8 +174,12 @@ LOGGING = {
         'exam': {
             'handlers': ['file'],
             'level': 'DEBUG',
-        },
-        
+        },        
     },
+}
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
 }

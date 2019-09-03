@@ -9,7 +9,7 @@ urlpatterns = [
     path('statics_false/', views.statics_false),
     path('chart_rate/', views.chart_rate),
     path('data/', views.data),
-    path('test/', views.test, name = 'test'),
+    
     path('download/', views.download, name = 'download'),
     
 ]

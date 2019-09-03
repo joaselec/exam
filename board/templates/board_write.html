@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Write{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+    <script language="javascript">
+        function writeCheck() {
+            var form = document.writeform;
+  
+            if (!form.name.value)
+            {
+                alert("이름을 적어주세요");
+                form.name.focus();
+                return;
+            }
+            if (!form.subject.value) {
+                alert("제목을 적어주세요");
+                form.subject.focus();
+                return;
+            }
+            if (!form.memo.value) {
+                alert("내용을 적어주세요");
+                form.memo.focus();
+                return;
+            }
+            form.submit();
+        }
+    </script>
+  
+  
+    
+   
+    <table width=700 border=1 cellspacing=0 cellpadding=5>
+        <form name=writeform method=post action="board/save">
+            <tr><td><b>이름</b></td><td><input type=text name=name size=50  maxlength=50></td></tr>
+            <tr><td><b>제목</b></td><td><input type=text name=title size=50  maxlength=50></td></tr>
+            <tr><td><b>내용</b></td><td><textarea name=detail cols=50 rows=10></textarea></td></tr>
+        </form>
+    </table>
+  
+    <table width=700 border=1 cellspacing=0 cellpadding=0>
+    <tr><td>
+    <input type=button value="등록" OnClick="javascript:writeCheck();">
+    </td></tr>
+    </table>
+
+    {% else %}
+        <meta http-equiv="refresh" content="0; url=accounts/login"></meta>
+    {% endif %}
+
+{% endblock %}
