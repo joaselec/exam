@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}List{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+    
+    <button type="button" id="new" class="btn btn-link" style="float:right" onclick="new_click();">글쓰기</button>
+    <button type="button" id="del" class="btn btn-link" style="float:right" onclick="del_board();">선택삭제</button>
+    <br><br>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <colgroup>
+                <col width="5%">
+                <col width="10%">
+                <col width="35%">
+                <col width="15%">
+                <col width="*">
+            </colgroup>
+            <thead>    
+                <tr>
+                    <th scope="col"><input id="allCheck" type="checkbox" onclick="allChk(this);"/></th>  
+                    <th>번호</th>    
+                    <th>제목</th>    
+                    <th>글쓴이</th>    
+                    <th>조회수</th>  
+                    <th>작성일자</th>    
+                </tr>    
+            </thead>    
+            <tbody id="AddOption">
+                {% for post in posts %}
+                <tr>
+                    <td class="text_ct"><input name="rowCheck" type="checkbox" value="{{post.id}}"/></td>
+                    <td>{{post.id}}</td>
+                    <td><a href="/board/detail/{{post.id}}">{{post.title}}</a></td>
+                    <td>{{post.username}}</td>
+                    <td>{{post.hits}}</td>
+                    <td>{{post.write_date}}</td>
+                </tr>
+                {% endfor %}  
+            </tbody>    
+        </table>
+    </div>
+    <div class = "pagination" >
+        <span class = "step-links">            
+            <ul class = "pagination">
+                {% if posts.has_previous %}
+                <li><a href="?page=1">front</a></li>
+                <li><a href="?page={{posts.previous_page_number}}">prev</a></li>
+                {% endif %}
+                <li><span>Page {{posts.number}} of {{posts.paginator.num_pages}}</span></li>
+                {% if posts.has_next %}
+                <li><a href="?page={{posts.next_page_number}}">next</a></li>
+                <li><a href="?page={{posts.paginator.num_pages}}">last</a></li>
+                {% endif %}
+            </ul>
+        </span>
+    </div>
+
+    <script>
+        function new_click() {
+            $("#new").click(function() {
+                location.href = "/board/new";
+            });
+        }
+        function del_click() {
+            $("#del").click(function() {
+                location.href = "/board/delete";
+            });
+        }
+        function del_board(){
+
+            var dList = [];
+
+            $("input[name='rowCheck']:checked").each(function(){
+                dList.push($(this).val());
+            });
+            $.post("/board/delete/",{'dList':dList,'csrfmiddlewaretoken':'{{csrf_token}}'},function(){
+                alert("삭제하였습니다.");
+                location.href = "/board/list"
+            });
+            
+        }       
+
+        function allChk(obj){
+            var chkObj = document.getElementsByName("rowCheck");
+            var rowCnt = chkObj.length - 1;
+            var check = obj.checked;
+            if (check){
+                for (var i=0; i<=rowCnt; i++){
+                    if(chkObj[i].type == "checkbox")
+                        chkObj[i].checked = true;
+                }
+            } 
+            else {
+                for (var i=0; i<=rowCnt; i++) {
+                    if(chkObj[i].type == "checkbox"){
+                        chkObj[i].checked = false;
+                    }
+                }
+            }
+        }
+    </script>
+        
+    {% else %}
+        <meta http-equiv="refresh" content="0; url=/accounts/login"></meta>
+    {% endif %}
+  
+
+{% endblock %}

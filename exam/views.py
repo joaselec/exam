@@ -3,6 +3,7 @@ import sqlite3
 import json
 import openpyxl
 import os
+import pandas as pd
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse
 from exam.models import result
@@ -16,16 +17,10 @@ from django.shortcuts import get_object_or_404
 
 
 
+
 logger = logging.getLogger(__name__)
 
-def board(request):
-    try:
-        context = {
 
-        }
-    finally:
-        print("finish")
-    return render(request, "board.html", context)
 
 def download(request):
     try:
@@ -109,30 +104,69 @@ def statics_false(request):
     return render(request, "statics_false.html", context)
 
 def data(request):
-    user_name = request.user.username
-    conn = sqlite3.connect("first.db")
-    cur = conn.cursor()
-    sql = """
-            select date, round(false*1.0/total*100)
-            from (select date, count(date) as false, (select count(a.date) from exam_result a where a.date = b.date) as total
-            from exam_result b
-            where user_name = ?
-            and check_YN = 'Y'
-            group by date)               
-        """
-    cur.execute(sql, (user_name,))
-    rows = cur.fetchall()
-    dates = ['일자', ]
-    rates = ['정답률',]
-    for row in rows:
-        dates.append("'"+row[0][2:])
-        rates.append(row[1])
-    data = {
-        'columns':[
-            dates,
-            rates,
-        ]
-    }
+    try:
+        user_name = request.user.username
+        conn = sqlite3.connect("first.db")
+        cur = conn.cursor()
+
+        query = cur.execute("select * from exam_result")
+        cols = [column[0] for column in query.description]
+        df = pd.DataFrame.from_records(data=query.fetchall(), columns=cols)
+        df['_date'] = df['date'].str.slice(0,10)
+        con_right = (df['check_yn'] == 'Y') & (df['user_name'] == user_name)
+        #con_false = df['check_yn'] == 'N'
+        #count_all = len(df)
+        #count_right = df.loc[con_right,"id"].count()
+        grouped_right = df.loc[con_right,"check_yn"].groupby(df["_date"]).count()
+        #grouped_false = df.loc[con_false,"check_yn"].groupby( df["date"]).count()
+        grouped_all = df["check_yn"].groupby(df["_date"][:10]).count()
+        right_rate = grouped_right / grouped_all 
+        right_rate = pd.DataFrame({'dates':right_rate.index, 'rates':right_rate.values}).fillna(0)
+        right_rate['rates'] = right_rate['rates'] * 100
+        dates = []
+        rates = []
+        dates.append('날짜')
+        dates = dates + right_rate['dates'].values.tolist()
+        #.append([right_rate['dates'].values.tolist()])
+        rates.append('정답률')
+        rates = rates + right_rate['rates'].values.tolist()
+        #.append([right_rate['rates'].values.tolist()])
+        # dates = right_rate['dates'].values.tolist()
+        # rates = right_rate['rates'].values.tolist()
+        data = {
+            'columns':[
+                dates,
+                rates,
+            ]
+        }
+        
+
+        
+
+        # sql = """
+        #         select date, round(false*1.0/total*100)
+        #         from (select date, count(date) as false, (select count(a.date) from exam_result a where a.date = b.date) as total
+        #         from exam_result b
+        #         where user_name = ?
+        #         and check_YN = 'Y'
+        #         group by date)               
+        #     """
+        # cur.execute(sql, (user_name,))
+        # rows = cur.fetchall()
+        # dates = ['일자', ]
+        # rates = ['정답률',]
+        # for row in rows:
+        #     dates.append("'"+row[0][2:])
+        #     rates.append(row[1])
+        # data = {
+        #     'columns':[
+        #         dates,
+        #         rates,
+        #     ]
+        # }
+    finally:
+        conn.close()
+
     return HttpResponse(json.dumps(data),content_type="text/json")
 
 def chart_rate(request):
@@ -200,7 +234,6 @@ def getExample(request):
         context = {
             "title_id": title_id,
             "title_name": title_name,
-            #"title_id": "2.1.1",
             "title_content": title_content,
             "example_id": example_id,
             "example_content": exam_content,
@@ -215,6 +248,8 @@ def getExample(request):
 def getTitleContent(request):
     try:
         title_id = request.GET["title_id"]
+        # b = request.user.has_perm('test')
+        # c = request.user.has_perm('aaa')
         conn = sqlite3.connect("first.db")
         cur = conn.cursor()
         cur.execute("SELECT name, content FROM TB_TITLE WHERE id = ?",(title_id,))
@@ -239,7 +274,9 @@ def sendResult(request):
     session_id = request.session.session_key
     user_name = request.user.username
     #date = request.user.last_login.strftime('%Y%m%d')
-    date = datetime.now().strftime('%Y%m%d')
+    #date = datetime.now().strftime('%Y%m%d')
+    date = datetime.now()
+
     if example_id[5] != ".": 
         title_id = example_id[0:6]
     else:

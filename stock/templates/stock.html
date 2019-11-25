@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}stock{% endblock %}
+
+{% block head %}
+   
+{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        <p>stock</p>
+        
+    {% else %}
+        <meta http-equiv="refresh" content="0; url=/accounts/login"></meta>
+    {% endif %}
+
+{% endblock %}

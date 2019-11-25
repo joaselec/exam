@@ -35,7 +35,7 @@
                         </ul>
                     </li>
                     <li><a href="/">문제</a></li>
-                    {% if perm.test %}
+                    {% if perms.test.0 %}
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">통계<span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -43,8 +43,12 @@
                             <!--<li><a href="/statics">자주틀린항목</a></li>-->
                             <li><a href="{% url 'statics' %}">자주틀린항목</a></li>
                             <li><a href="/chart_rate">차트</a></li>
+                        </ul>
                     </li>
                     {% endif %}
+                    <li>
+                        <a href="/board/list">게시판</a>
+                    </li>
                     
                 </ul>
             </div>

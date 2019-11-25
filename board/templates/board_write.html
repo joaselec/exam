@@ -4,51 +4,35 @@
 
 {% block content %}
 
-    {% if user.is_authenticated %}
-
-    <script language="javascript">
-        function writeCheck() {
-            var form = document.writeform;
+    <!--{% if user.is_authenticated %}  -->
   
-            if (!form.name.value)
-            {
-                alert("이름을 적어주세요");
-                form.name.focus();
-                return;
-            }
-            if (!form.subject.value) {
-                alert("제목을 적어주세요");
-                form.subject.focus();
-                return;
-            }
-            if (!form.memo.value) {
-                alert("내용을 적어주세요");
-                form.memo.focus();
-                return;
-            }
-            form.submit();
-        }
-    </script>
-  
-  
-    
+    <form action='board/save/' class="needs-validation post-form" novalidate method="POST">
+        <div class="form-group">
+            <label for="title">글 제목</label>
+            <input type="text" class="form-control" id="title" placeholder="글제목을 입력하세요">
+        </div>
+        <div class="form-group">
+            <label for="detail">글 내용</label>
+            <textarea class="form-control col-sm-5" rows="5"></textarea>
+        </div>
+        <br><br>
+        <div class="form-group">
+            <label for="InputFile">파일 업로드</label>
+            <input type="file" id="InputFile">
+            <p class="help-block">여기에 블록레벨 도움말 예제</p>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox"> 입력을 기억합니다
+            </label>
+        </div>
+        <button type="submit" class="btn btn-default">작성</button>
+    </form> 
    
-    <table width=700 border=1 cellspacing=0 cellpadding=5>
-        <form name=writeform method=post action="board/save">
-            <tr><td><b>이름</b></td><td><input type=text name=name size=50  maxlength=50></td></tr>
-            <tr><td><b>제목</b></td><td><input type=text name=title size=50  maxlength=50></td></tr>
-            <tr><td><b>내용</b></td><td><textarea name=detail cols=50 rows=10></textarea></td></tr>
-        </form>
-    </table>
-  
-    <table width=700 border=1 cellspacing=0 cellpadding=0>
-    <tr><td>
-    <input type=button value="등록" OnClick="javascript:writeCheck();">
-    </td></tr>
-    </table>
-
+   
+    <!--
     {% else %}
-        <meta http-equiv="refresh" content="0; url=accounts/login"></meta>
+        <meta http-equiv="refresh" content="0; url=/accounts/login"></meta>
     {% endif %}
-
+    -->
 {% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}New{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+
+    <h1>새글 작성</h1>
+    <form action='/board/save/' method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.media }}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+
+    {% else %}
+        <meta http-equiv="refresh" content="0; url=/accounts/login"></meta>
+    {% endif %}
+
+
+{% endblock %}

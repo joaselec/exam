@@ -8,6 +8,8 @@ db.sqlite3
 .DS_Store
 /.vscode
 /exam/static
+상장법인목록.xls
+test.xlsx
 
 
 

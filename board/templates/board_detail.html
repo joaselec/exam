@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Detail{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <caption>Detail</caption>
+            <colgroup>
+                <col width="15%">
+                <col width="35%">
+                <col width="15%">
+                <col width="*">
+            </colgroup>
+            
+            <tbody>
+                <tr>
+                    <th>제목</th>
+                    <td>{{post.title}}</td>
+                    <th>조회수</th>
+                    <td>{{post.hits}}</td>
+                </tr>
+                <tr>
+                    <th>작성자</th>
+                    <td>{{post.username}}</td>
+                    <th>작성일</th>
+                    <td>{{post.write_date}}</td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td colspan="3">
+                        {{post.detail|safe}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+   
+
+    <button type="button" id="list" class="btn btn-link" style="float:right" onclick="list_click();">목록으로</button>
+    <button type="button" id="modify" class="btn btn-link" style="float:right" onclick="modify_click();">수정하기</button>
+
+
+    <script type="text/javascript">
+        function modify_click() {
+            $("#modify").click(function() {
+                location.href = "/board/modify/{{post.id}}";
+            });
+        }
+        function list_click() {
+            $("#list").click(function() {
+                location.href = "/board/list";
+            });
+        }       
+    </script>
+
+  
+        
+    {% else %}
+        <meta http-equiv="refresh" content="0; url=/accounts/login"></meta>
+    {% endif %}
+  
+
+{% endblock %}

@@ -22,6 +22,7 @@ urlpatterns = [
     path("", include("exam.urls")),
     path("", include("accounts.urls")),
     path("", include("board.urls")),
+    path("", include("stock.urls")),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

@@ -23,11 +23,19 @@
                         type: 'line'
                     },
                     xAxis: {
+                        type: 'datetime',
+                        labels: {
+                            format: '{value:%y%m%d}'
+                        },
                         title:{
                             text: '일자' //X축이름
                         },
                     },
+                  
+
+
                     yAxis: {
+                        max: 100,
                         title:{ 
                             text: '정답률' //Y축 이름
                         },
