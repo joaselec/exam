@@ -103,6 +103,7 @@ def statics_false(request):
     
     return render(request, "statics_false.html", context)
 
+
 def data(request):
     try:
         user_name = request.user.username
