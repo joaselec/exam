@@ -112,14 +112,13 @@ def data(request):
         query = cur.execute("select * from exam_result")
         cols = [column[0] for column in query.description]
         df = pd.DataFrame.from_records(data=query.fetchall(), columns=cols)
+
         df['_date'] = df['date'].str.slice(0,10)
         con_right = (df['check_yn'] == 'Y') & (df['user_name'] == user_name)
-        #con_false = df['check_yn'] == 'N'
-        #count_all = len(df)
-        #count_right = df.loc[con_right,"id"].count()
+        con_all = df['user_name'] == user_name
+
         grouped_right = df.loc[con_right,"check_yn"].groupby(df["_date"]).count()
-        #grouped_false = df.loc[con_false,"check_yn"].groupby( df["date"]).count()
-        grouped_all = df["check_yn"].groupby(df["_date"][:10]).count()
+        grouped_all = df.loc[con_all,"check_yn"].groupby(df["_date"]).count()
         right_rate = grouped_right / grouped_all 
         right_rate = pd.DataFrame({'dates':right_rate.index, 'rates':right_rate.values}).fillna(0)
         right_rate['rates'] = right_rate['rates'] * 100
@@ -127,12 +126,10 @@ def data(request):
         rates = []
         dates.append('날짜')
         dates = dates + right_rate['dates'].values.tolist()
-        #.append([right_rate['dates'].values.tolist()])
+
         rates.append('정답률')
         rates = rates + right_rate['rates'].values.tolist()
-        #.append([right_rate['rates'].values.tolist()])
-        # dates = right_rate['dates'].values.tolist()
-        # rates = right_rate['rates'].values.tolist()
+
         data = {
             'columns':[
                 dates,
