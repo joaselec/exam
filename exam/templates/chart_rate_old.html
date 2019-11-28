@@ -25,7 +25,6 @@
                     },
                     xAxis: {
                         type: 'datetime',
-                        categories: jsondata.column[0],
                         labels: {
                             format: '{value:%y%m%d}'
                         },
@@ -42,17 +41,17 @@
                     series: [
                         {
                             name: '정답률',
-                            data: jsondata.column[1],
+                            data: jsondata.rate,
                             //type: 'column',
                             //data: jsondata,
                         },
                         {
                             name: '풀이수',
                             type: 'column',
-                            data: jsondata.column[2],
-                            color: 'blue',
+                            data: jsondata.count,
                         }
                     ],
+                    data: jsondata,
                 });
             });
         </script>

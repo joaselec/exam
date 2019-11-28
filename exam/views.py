@@ -121,22 +121,27 @@ def data(request):
         grouped_right = df.loc[con_right,"check_yn"].groupby(df["_date"]).count()
         grouped_all = df.loc[con_all,"check_yn"].groupby(df["_date"]).count()
         right_rate = grouped_right / grouped_all 
-        right_rate = pd.DataFrame({'dates':right_rate.index, 'rates':right_rate.values}).fillna(0)
+        right_rate = pd.DataFrame({'dates':right_rate.index, 'rates':right_rate.values, 'cnts':grouped_all.values}).fillna(0)
         right_rate['rates'] = right_rate['rates'] * 100
         dates = []
         rates = []
-        dates.append('날짜')
-        dates = dates + right_rate['dates'].values.tolist()
+        cnts = []
+        #dates.append('날짜')
+        dates = right_rate['dates'].values.tolist()
 
-        rates.append('정답률')
-        rates = rates + right_rate['rates'].values.tolist()
+        #rates.append('정답률')
+        rates = right_rate['rates'].values.tolist()
+        #count 
+        cnts = right_rate['cnts'].values.tolist()
 
         data = {
-            'columns':[
+            'column':[
                 dates,
                 rates,
-            ]
+                cnts,
+            ],
         }
+        
         
 
         
@@ -164,8 +169,11 @@ def data(request):
         # }
     finally:
         conn.close()
-
     return HttpResponse(json.dumps(data),content_type="text/json")
+    # return HttpResponse({
+    #     'rate': json.dumps(data),
+    #     'count': json.dumps(data)
+    # },content_type="text/json")
 
 def chart_rate(request):
     return render(request, "chart_rate.html")
