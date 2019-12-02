@@ -3,7 +3,8 @@ from stock import views
 
 urlpatterns = [
     
-    path('stock/add_stocks/', views.add_stocks, name = 'add_stocks'),
+    path('stock/stock/', views.stock, name = 'stock'),
+    path('stock/add_stock/', views.add_stock, name = 'add_stock'),
     
     
 ]

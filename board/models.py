@@ -1,5 +1,8 @@
 from django.db import models
 from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
+ 
+
 
 # Create your models here.
 class board(models.Model):
@@ -12,6 +15,7 @@ class board(models.Model):
     modify_date = models.CharField(max_length=255)
     enable_yn = models.CharField(max_length=1)
     #recommend = models.CharField(max_length=500)
+    body = RichTextUploadingField()
 
     def __str__(self):
         return "%s %s %s %s %s %s %s" % (self.username, self.title, 

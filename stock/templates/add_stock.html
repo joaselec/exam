@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Add{% endblock %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+    <body>
+        <br>
+        <table border="1">
+            <colgroup>
+                <col width="15%">
+                <col width="15%">
+                <col width="15%">
+                <col width="15%">
+                <col width="15%">
+                <col width="*">
+            </colgroup>
+            <tbody>
+                <tr id="trStock">
+                    <td>
+                        <strong>종목</strong>
+                        <input type="text" id="stock_id" name="stock_id0" placeholder="종목명">
+                        <input type="text" id="purchase_price" name="purchase_price0" placeholder="매입가">
+                        <button class="btn btn-default" id='add_stock' name='add_stock0'>추가</button>
+                        <button class="btn btn-default" id='del_stock' name='del_stock0'>삭제</button>
+                        <button class="btn btn-default" id='stock_input_add' name='stock_input_add0'> + </button>
+                    </td>
+                </tr>               
+            </tbody>
+        </table>
+      
+    <script>
+        var count = 1;         
+        //추가 버튼
+        $(document).on("click","button[id=stock_input_add]",function(){    
+            
+            var addStockText =  
+                '<tr id="trStock">'+
+                '   <td>'+
+                '       <strong>종목</strong>'+
+                '       <input type="text" id="stock_id" name="stock_id' + count + '" placeholder="종목명">'+
+                '       <input type="text" id="purchase_price" name="purchase_price' + count + '" placeholder="매입가">'+
+                '       <button class="btn btn-default" id="add_stock" name="add_stock' + count + '">추가</button>'+
+                '       <button class="btn btn-default" id="del_stock" name="del_stock' + count + '">삭제</button>'+
+                '       <button class="btn btn-default" id="stock_input_add" name="stock_input_add' + count + '"> + </button>'+
+                '   </td>'+
+                '</tr>';                 
+            var trHtml = $( "tr[id=trStock]:last" ); //last를 사용하여 trStock라는 명을 가진 마지막 태그 호출             
+            trHtml.after(addStockText); //마지막 trStock명 뒤에 붙인다.
+            count++;
+        });
+         
+        //삭제버튼
+        $(document).on("click","button[id=del_stock]",function(){             
+            var trHtml = $(this).parent().parent();             
+            trHtml.remove(); //tr 테그 삭제             
+        });
+
+        //추가버튼
+        $(document).on("click","button[id=add_stock]",function(){ 
+            var cnt = this.name.charAt(this.name.length-1);
+            alert($('input[name="stock_id'+cnt+'"]').val());
+            var name = $('input[name="stock_id'+cnt+'"]').val();
+            var price = $('input[name="purchase_price'+cnt+'"]').val();
+            $.get("/stock/add_stock",
+                { 
+                    "stock_name": name,
+                    "purchase_price": price
+                },
+                function(data, status)
+                { 
+                    console.log(data + ":" + status); 
+                },
+                "json");
+        });
+    </script>  
+        
+    {% else %}
+        <meta http-equiv="refresh" content="0; url=/accounts/login"></meta>
+    {% endif %}
+  
+
+{% endblock %}
