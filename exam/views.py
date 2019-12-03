@@ -234,10 +234,11 @@ def getExample(request):
         row = cur.fetchone()
         title_name = row[0]
         title_content = row[1]
-
+        cat = '<#' + title_id[0:1] + '>'
         #cur.execute("SELECT content FROM TB_TITLE WHERE id = ?",(title_id))
                     
         context = {
+            "cat": cat,
             "title_id": title_id,
             "title_name": title_name,
             "title_content": title_content,
