@@ -122,7 +122,7 @@ def data(request):
         grouped_all = df.loc[con_all,"check_yn"].groupby(df["_date"]).count()
         right_rate = grouped_right / grouped_all 
         right_rate = pd.DataFrame({'dates':right_rate.index, 'rates':right_rate.values, 'cnts':grouped_all.values}).fillna(0)
-        right_rate['rates'] = right_rate['rates'] * 100
+        right_rate['rates'] = round(right_rate['rates'] * 100)
         dates = []
         rates = []
         cnts = []
