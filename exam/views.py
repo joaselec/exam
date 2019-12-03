@@ -234,7 +234,13 @@ def getExample(request):
         row = cur.fetchone()
         title_name = row[0]
         title_content = row[1]
-        cat = '<#' + title_id[0:1] + '>'
+
+        cat = '<'+f(title_id[0:1]) + '>'
+
+        #cat = '<#' + title_id[0:1] + '>'
+
+
+
         #cur.execute("SELECT content FROM TB_TITLE WHERE id = ?",(title_id))
                     
         context = {
@@ -250,6 +256,8 @@ def getExample(request):
         conn.close()
 
     return render(request, "exam.html", context)
+
+def f(x): return {'1': '관리체계 수립 및 운영', '2': '보호대책 요구사항', '3': '개인정보 처리 단계별 요구사항'}[x]
 
 
 def getTitleContent(request):
