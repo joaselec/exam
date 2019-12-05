@@ -192,5 +192,5 @@ REST_FRAMEWORK = {
 }
 
 CRONJOBS = [
-    ('*/1 * * * *', 'stock.cron.my_cron_job')
+    ('*/1 * * * *', 'stock.my_scheduled_job')
 ]
