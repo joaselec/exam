@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'stock',
     'ckeditor_uploader',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -189,3 +190,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
 }
+
+CRONJOBS = [
+    ('*/1 * * * *', 'stock.cron.my_cron_job')
+]
