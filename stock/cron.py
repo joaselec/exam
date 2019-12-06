@@ -1,13 +1,15 @@
-from stock.models import CronLog
+#from stock.models import CronLog
 import os
+
+a = 0
  
 def my_scheduled_job():    
-    CronLog.objects.create()
+    #CronLog.objects.create()
     #CronLog.save()
     #print("cron")
     fileRW()
 
-a = 0
+
 
 def fileRW():
     try:
@@ -30,3 +32,6 @@ def fileRW():
 def my_cron_job():
     #pass
     print("cron")
+
+fileRW()
+#my_scheduled_job()
