@@ -3,7 +3,8 @@ from stock.models import CronLog
 def my_scheduled_job():    
     CronLog.objects.create()
     #CronLog.save()
-    print("cron")
+    #print("cron")
+    fileRW()
 
 a = 0
 
