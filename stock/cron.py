@@ -8,6 +8,7 @@ def my_scheduled_job():
     #CronLog.save()
     #print("cron")
     fileRW()
+    print("cron worked!")
 
 
 
