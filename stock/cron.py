@@ -1,4 +1,5 @@
 from stock.models import CronLog
+import os
  
 def my_scheduled_job():    
     CronLog.objects.create()
@@ -11,7 +12,15 @@ a = 0
 def fileRW():
     try:
         global a
-        f = open("test.txt", 'a')
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        filepath = os.path.join(BASE_DIR, 'cron.txt')
+        filename = os.path.basename(filepath)
+
+        # with open(filepath, 'rb') as f:
+        #     response = HttpResponse(f, content_type="application/vnd.ms-excel")
+        #     response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
+
+        f = open(filename, 'a')
         f.write(str(a))
         a = a + 1
     finally:
