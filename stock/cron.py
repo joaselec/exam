@@ -14,8 +14,9 @@ def my_scheduled_job():
 def fileRW():
     try:
         global a
+        b = 0
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        filepath = os.path.join(BASE_DIR, 'cron.txt')
+        filepath = os.path.join(BASE_DIR, 'cron1.txt')
         filename = os.path.basename(filepath)
 
         # with open(filepath, 'rb') as f:
@@ -23,8 +24,9 @@ def fileRW():
         #     response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
 
         f = open(filename, 'a')
-        f.write(str(a))
-        a = a + 1
+        f.write(str(b))
+        b = b + 1
+        #a = a + 1
     finally:
         f.close()
 
