@@ -149,9 +149,9 @@ def check_price():
     finally:
         conn.close()
 
-# def test():
-#     rows = load_stocks()
-#     set_current_prices(rows)
+def test():
+    rows = load_stocks()
+    set_current_prices(rows)
 
 rows = load_stocks()
 set_current_prices(rows)

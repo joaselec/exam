@@ -46,7 +46,7 @@ def add_stock(request):
 
         # stock_name = request.GET["stock_name"]
         # purchase_price = request.GET["purchase_price"]
-        print(stock_name + purchase_price)
+        # print(stock_name + purchase_price)
 
         code = get_code(stock_name)
 
