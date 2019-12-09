@@ -7,6 +7,7 @@ from .form import StockForm
 from stock.models import *
 from stock.cron import *
 from django.http import HttpResponse, JsonResponse
+import sys
 
 
 
@@ -32,8 +33,8 @@ def stock(request):
 
 def add_stock(request):
     try: 
-
-        stock_name = request.GET.get('stock_name').decode('cp949').encode('utf-8')
+        print(sys.getdefaultencoding())
+        stock_name = request.GET.get('stock_name')       
 
         print(stock_name)
         
