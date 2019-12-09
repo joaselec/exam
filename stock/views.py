@@ -46,9 +46,7 @@ def add_stock(request):
         if check_duplicate(stock_name):
             return JsonResponse({
                 "msg" : '중복 데이터 입력입니다.',
-            }, json_dumps_params = {'ensure_ascii': True})
-
-
+                }, json_dumps_params = {'ensure_ascii': True})
 
         code = get_code(stock_name)
 
