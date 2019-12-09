@@ -20,9 +20,9 @@
                     <tr id="trStock">
                         <td>
                             <strong>종목</strong>
-                            <input type="text" id="stock_id" name="stock_id0" placeholder="종목명">
-                            <input type="text" id="purchase_price" name="purchase_price0" placeholder="매입가">
-                            <button class="btn btn-default" id='add_stock' name='add_stock0'>추가</button>
+                            <input type="text" id="stock_id" name="stock_id" placeholder="종목명">
+                            <input type="text" id="purchase_price" name="purchase_price" placeholder="매입가">
+                            <button class="btn btn-default" id='add_stock' name='add_stock'>추가</button>
                             <!--
                             <button class="btn btn-default" id='del_stock' name='del_stock0'>삭제</button>
                             <button class="btn btn-default" id='stock_input_add' name='stock_input_add0'> + </button>
@@ -37,8 +37,8 @@
                     <col width="30">
                     <col width="30">
                     <col width="30">
-                    <col width="30">
-                    <col width="30">                    
+                    <col width="150">
+                    <col width="*">                    
                 </colgroup> 
                 <tbody id="AddOption">
                     {% for post in posts %}
@@ -49,7 +49,7 @@
                             <td>{{post.5}}%</td>
                             <td>{{post.6}}</td>
                             <td><button class="btn btn-default" id='del_stock' value="{{post.0}}">삭제</button></td>
-                            <td><button class="btn btn-default" id='stock_input_add' value="{{post.0}}"> 변경 </button></td>
+                            <!--<td><button class="btn btn-default" id='stock_input_add' value="{{post.0}}"> 변경 </button></td>-->
                         </tr>
                     {% endfor %}  
                 </tbody>    
@@ -57,38 +57,43 @@
         </div>
       
     <script>
-        var count = 1;         
-        //추가 버튼
-        $(document).on("click","button[id=stock_input_add]",function(){    
-            
-            var addStockText =  
-                '<tr id="trStock">'+
-                '   <td>'+
-                '       <strong>종목</strong>'+
-                '       <input type="text" id="stock_id" name="stock_id' + count + '" placeholder="종목명">'+
-                '       <input type="text" id="purchase_price" name="purchase_price' + count + '" placeholder="매입가">'+
-                '       <button class="btn btn-default" id="add_stock" name="add_stock' + count + '">추가</button>'+
-                '       <button class="btn btn-default" id="del_stock" name="del_stock' + count + '">삭제</button>'+
-                '       <button class="btn btn-default" id="stock_input_add" name="stock_input_add' + count + '"> + </button>'+
-                '   </td>'+
-                '</tr>';                 
-            var trHtml = $( "tr[id=trStock]:last" ); //last를 사용하여 trStock라는 명을 가진 마지막 태그 호출             
-            trHtml.after(addStockText); //마지막 trStock명 뒤에 붙인다.
-            count++;
+        // var count = 1;         
+        // //추가 버튼
+        // $(document).on("click","add_stock",function(){               
+        //     var addStockText =  
+        //         '<tr id="trStock">'+
+        //         '   <td>'+
+        //         '       <strong>종목</strong>'+
+        //         '       <input type="text" id="stock_id" name="stock_id' + count + '" placeholder="종목명">'+
+        //         '       <input type="text" id="purchase_price" name="purchase_price' + count + '" placeholder="매입가">'+
+        //         '       <button class="btn btn-default" id="add_stock" name="add_stock' + count + '">추가</button>'+
+        //         '       <button class="btn btn-default" id="del_stock" name="del_stock' + count + '">삭제</button>'+
+        //         '       <button class="btn btn-default" id="stock_input_add" name="stock_input_add' + count + '"> + </button>'+
+        //         '   </td>'+
+        //         '</tr>';                 
+        //     var trHtml = $( "tr[id=trStock]:last" ); //last를 사용하여 trStock라는 명을 가진 마지막 태그 호출             
+        //     trHtml.after(addStockText); //마지막 trStock명 뒤에 붙인다.
+        //     count++;
+        // });
+        
+        $(document).on("click","button[id=del_stock]",function(data){             
+            $.post("/stock/delete/",{'id':$(this).val(),'csrfmiddlewaretoken':'{{csrf_token}}'},function(data){
+                alert("삭제하였습니다.");
+            });
         });
-         
+
         //삭제버튼
-        $(document).on("click","button[id=del_stock]",function(){             
-            //var trHtml = $(this).parent().parent();             
-            //trHtml.remove(); //tr 테그 삭제             
-        });
+        // $(document).on("click","button[id=del_stock]",function(){             
+        //     //var trHtml = $(this).parent().parent();             
+        //     //trHtml.remove(); //tr 테그 삭제             
+        // });
 
         //확인버튼
         $(document).on("click","button[id=add_stock]",function(){ 
             var cnt = this.name.charAt(this.name.length-1);
             //alert($('input[name="stock_id'+cnt+'"]').val());
-            var name = $('input[name="stock_id'+cnt+'"]').val();
-            var price = $('input[name="purchase_price'+cnt+'"]').val();
+            var name = $('input[name="stock_id"]').val();
+            var price = $('input[name="purchase_price"]').val();
             $.get("/stock/add_stock",
                 { 
                     "stock_name": name,

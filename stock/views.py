@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from board.api import TEST
 import pandas as pd
 from .form import StockForm
@@ -32,9 +32,22 @@ def stock(request):
     
     return render(request, "add_stock.html", context)
 
+def delete(request):
+    try:
+        stock_id = request.POST.get('id')       
+        conn = sqlite3.connect("first.db")
+        cur = conn.cursor()
+        sql = "delete from stock_stocks where id = (?)"
+        cur.execute(sql,(stock_id,))
+        conn.commit()       
+    finally:
+        conn.close()
+    
+    return redirect('stock')
+
 def add_stock(request):
     try: 
-        print(sys.getdefaultencoding())
+        
         stock_name = request.GET.get('stock_name')       
         
         
@@ -68,7 +81,7 @@ def add_stock(request):
         test()
     finally:
         conn.close()
-    return render(request, "add_stock.html")
+    return redirect('stock')
 
 def check_duplicate(stock_name):
     try:
