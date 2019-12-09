@@ -36,6 +36,7 @@ def add_stock(request):
         stock_name = request.GET.get('stock_name')
         
         purchase_price = request.GET.get('purchase_price')
+        print(stock_name)
         print(type(stock_name))
         print(type(purchase_price))
 
