@@ -215,10 +215,11 @@ def getExample(request):
                 SELECT id, content 
                 FROM TB_EXAM 
                 WHERE id not in (
-                    select distinct example_id 
+                    select distinct example_id
                     from exam_result
                     where session_id = ?
                     and check_yn = 'Y'
+                    and date > datetime('now','-1 days')                   
                     )
                 ORDER BY RANDOM() LIMIT 1
               """
