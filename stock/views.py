@@ -36,9 +36,6 @@ def add_stock(request):
         stock_name = request.GET.get('stock_name').encode("utf-8")
         
         purchase_price = request.GET.get('purchase_price').encode("utf-8")
-        print(stock_name)
-        print(type(stock_name))
-        print(type(purchase_price))
 
         conn = sqlite3.connect("first.db")
         cur = conn.cursor()
