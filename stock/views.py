@@ -36,17 +36,11 @@ def add_stock(request):
         cur = conn.cursor()
 
         if check_duplicate(stock_name):
-            # context = {
-            #     "data" : "중복된 종목입니다.",
-            # }
-            #return render(request, "add_stock.html", {"data":"aaa"})
             return JsonResponse({
                 "msg" : '중복 데이터 입력입니다.',
             }, json_dumps_params = {'ensure_ascii': True})
 
-        # stock_name = request.GET["stock_name"]
-        # purchase_price = request.GET["purchase_price"]
-        # print(stock_name + purchase_price)
+
 
         code = get_code(stock_name)
 
