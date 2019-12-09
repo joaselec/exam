@@ -33,9 +33,9 @@ def stock(request):
 def add_stock(request):
     try: 
 
-        stock_name = request.GET.get('stock_name')
+        stock_name = request.GET.get('stock_name').encode("utf-8")
         
-        purchase_price = request.GET.get('purchase_price')
+        purchase_price = request.GET.get('purchase_price').encode("utf-8")
         print(stock_name)
         print(type(stock_name))
         print(type(purchase_price))
