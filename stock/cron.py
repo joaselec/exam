@@ -35,7 +35,7 @@ def get_price(code):
 
 def get_code(name):
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    filepath = os.path.join(BASE_DIR, '상장법인목록.xlsx')
+    filepath = os.path.join(BASE_DIR, 'company_code.xlsx')
     filename = os.path.basename(filepath)
 
     df = pd.read_excel(filename)
