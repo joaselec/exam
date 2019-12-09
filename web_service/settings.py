@@ -111,7 +111,8 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'ko-kr'
+#LANGUAGE_CODE = 'ko-kr' 
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Asia/Seoul'
 
@@ -192,5 +193,5 @@ REST_FRAMEWORK = {
 }
 
 CRONJOBS = [
-    ('*/1 * * * *', 'stock.my_scheduled_job')
+    ('* * * * *', 'stock.my_scheduled_job')
 ]

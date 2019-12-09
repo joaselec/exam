@@ -1,4 +1,5 @@
-from django.shortcuts import render, render_to_response
+# from django.shortcuts import render, render_to_response
+from django.shortcuts import render
 import sqlite3
 import json
 import openpyxl
@@ -14,6 +15,7 @@ from datetime import datetime
 import logging
 from django.contrib.auth.models import Permission, User
 from django.shortcuts import get_object_or_404
+from stock.cron import *
 
 
 

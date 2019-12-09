@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response, redirect
+from django.shortcuts import render, redirect
 import sqlite3
 import json
 import openpyxl
