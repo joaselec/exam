@@ -38,7 +38,7 @@
                     <col width="30">
                     <col width="30">
                     <col width="30">
-                    <col width="30">                    
+                    <col width="*">                    
                 </colgroup> 
                 <tbody id="AddOption">
                     {% for post in posts %}
@@ -47,6 +47,7 @@
                             <td>{{post.3}}</td>
                             <td>{{post.4}}</td>
                             <td>{{post.5}}%</td>
+                            <td>{{post.6}}</td>
                             <td><button class="btn btn-default" id='del_stock' value="{{post.0}}">삭제</button></td>
                             <td><button class="btn btn-default" id='stock_input_add' value="{{post.0}}"> 변경 </button></td>
                         </tr>
