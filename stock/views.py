@@ -37,7 +37,6 @@ def add_stock(request):
         print(sys.getdefaultencoding())
         stock_name = request.GET.get('stock_name')       
         
-        stock_name.en
         
         purchase_price = request.GET.get('purchase_price')
 
