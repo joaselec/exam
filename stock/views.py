@@ -78,7 +78,7 @@ def add_stock(request):
         cur.execute(sql,(code, stock_name, purchase_price))
         conn.commit()
 
-        #test()
+        test()
     finally:
         conn.close()
     return redirect('stock')

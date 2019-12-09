@@ -60,7 +60,7 @@ def get_code(name):
 def load_stocks():
     try:
         stock_list = []
-        conn = sqlite3.connect("first.db")
+        conn = sqlite3.connect("./first.db")
         cur = conn.cursor()
         cur.execute("SELECT stock_code FROM stock_stocks")
         rows = cur.fetchall()
@@ -74,7 +74,7 @@ def load_stocks():
 
 def set_current_prices(stock_list):
     try:
-        conn = sqlite3.connect("first.db")
+        conn = sqlite3.connect("./first.db")
         cur = conn.cursor()
         #sql = ""
         for code in stock_list:
@@ -91,7 +91,7 @@ def set_current_prices(stock_list):
 
 def get_returns(current_price, code):
     try:
-        conn = sqlite3.connect("first.db")
+        conn = sqlite3.connect("./first.db")
         cur = conn.cursor()
         #sql = ""
         #for code in stock_list:
@@ -113,7 +113,7 @@ def get_returns(current_price, code):
 def check_price():
     try:
         #stock_list = []
-        conn = sqlite3.connect("first.db")
+        conn = sqlite3.connect("./first.db")
         cur = conn.cursor()
         cur.execute("SELECT stock_name, current_price, stock_returns FROM stock_stocks")
         rows = cur.fetchall()
