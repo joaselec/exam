@@ -133,10 +133,7 @@ def send_telegram(msg):
     bot = telepot.Bot(token)
     bot.sendMessage(mc, msg)
 
-def test():
-    rows = load_stocks()
-    set_current_prices(rows)
-    check_price()
+
 
 rows = load_stocks()
 set_current_prices(rows)
