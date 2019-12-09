@@ -1,4 +1,4 @@
-#-*- coding:utf-8 -*-
+# -*- coding: UTF-8 -*-
 
 from django.shortcuts import render
 from board.api import TEST
@@ -8,6 +8,7 @@ from stock.models import *
 from stock.cron import *
 from django.http import HttpResponse, JsonResponse
 import sys
+
 
 
 
@@ -35,8 +36,8 @@ def add_stock(request):
     try: 
         print(sys.getdefaultencoding())
         stock_name = request.GET.get('stock_name')       
-
-        print(stock_name)
+        
+        stock_name.en
         
         purchase_price = request.GET.get('purchase_price')
 
