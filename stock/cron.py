@@ -67,9 +67,10 @@ def load_stocks():
         for row in rows:
             stock_list.append(row[0])
         return stock_list
+
     finally:
         conn.close()
-    return 
+
 
 def set_current_prices(stock_list):
     try:
@@ -110,51 +111,36 @@ def get_returns(current_price, code):
         conn.close()
 
 def check_price():
-    try:        
+    try:
+        #stock_list = []
         conn = sqlite3.connect("first.db")
         cur = conn.cursor()
-
-        # query = cur.execute("select * from stock_stocks")
-        # cols = [column[0] for column in query.description]
-        # df = pd.DataFrame.from_records(data=query.fetchall(), columns=cols)
-
-        # df['_date'] = df['date'].str.slice(0,10)
-        # con_right = (df['check_yn'] == 'Y') & (df['user_name'] == user_name)
-        # con_all = df['user_name'] == user_name
-
-        # grouped_right = df.loc[con_right,"check_yn"].groupby(df["_date"]).count()
-        # grouped_all = df.loc[con_all,"check_yn"].groupby(df["_date"]).count()
-        # right_rate = grouped_right / grouped_all 
-        # right_rate = pd.DataFrame({'dates':right_rate.index, 'rates':right_rate.values, 'cnts':grouped_all.values}).fillna(0)
-        # right_rate['rates'] = round(right_rate['rates'] * 100)
-        # dates = []
-        # rates = []
-        # cnts = []
-        # #dates.append('날짜')
-        # dates = right_rate['dates'].values.tolist()
-
-        # #rates.append('정답률')
-        # rates = right_rate['rates'].values.tolist()
-        # #count 
-        # cnts = right_rate['cnts'].values.tolist()
-
-        # data = {
-        #     'column':[
-        #         dates,
-        #         rates,
-        #         cnts,
-        #     ],
-        # }
+        cur.execute("SELECT stock_name, current_price, stock_returns FROM stock_stocks")
+        rows = cur.fetchall()
+        for row in rows:
+            if float(row[2]) >= 3.0:
+                msg = row[0] + " 현재가:" + row[1] + " 수익률:" + row[2]
+                send_telegram(msg)
 
     finally:
         conn.close()
 
+
+def send_telegram(msg):
+    token = "913353921:AAF2jBq2Uj_6NzCyPQHxiikll3Uv8Bd83mg"
+    mc = "861046322"
+    #mc = "919725238"
+    bot = telepot.Bot(token)
+    bot.sendMessage(mc, msg)
+
 def test():
     rows = load_stocks()
     set_current_prices(rows)
+    check_price()
 
 rows = load_stocks()
 set_current_prices(rows)
+check_price()
 
 
 # def get_code_db():
@@ -162,12 +148,7 @@ set_current_prices(rows)
 #     cur = conn.cursor()
 #     sql = "select stock_name from "
 
-# # def send_telegram(msg):
-# #     token = "913353921:AAF2jBq2Uj_6NzCyPQHxiikll3Uv8Bd83mg"
-# #     mc = "861046322"
-# #     #mc = "919725238"
-# #     bot = telepot.Bot(token)
-# #     bot.sendMessage(mc, msg)
+
 
 # l = list()
 
