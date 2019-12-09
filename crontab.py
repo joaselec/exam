@@ -134,10 +134,11 @@ def send_telegram(msg):
     bot.sendMessage(mc, msg)
 
 
-
-rows = load_stocks()
-set_current_prices(rows)
-check_price()
+if __name__ == '__main__':
+    rows = load_stocks()
+    set_current_prices(rows)
+    check_price()
+    print("aaa")
 
 
 # def get_code_db():
