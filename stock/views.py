@@ -53,6 +53,8 @@ def add_stock(request):
         
         purchase_price = request.GET.get('purchase_price')
 
+        purchase_price = str(float(purchase_price))
+
         conn = sqlite3.connect("first.db")
         cur = conn.cursor()
 

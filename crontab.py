@@ -54,7 +54,6 @@ def get_code(name):
         elif len(code) == 7:
             code = code[1:7]
 
-    
     return code
 
 def load_stocks():
@@ -91,7 +90,7 @@ def set_current_prices(stock_list):
 
 def get_returns(current_price, code):
     try:
-        conn = sqlite3.connect("./first.db")
+        conn = sqlite3.connect("first.db")
         cur = conn.cursor()
         #sql = ""
         #for code in stock_list:
@@ -101,9 +100,9 @@ def get_returns(current_price, code):
         sql = "select start_price from stock_stocks where stock_code = ?"
         cur.execute(sql, (code,))              
         row = cur.fetchone()
-        sp = int(row[0])
-        deff = float(current_price) - sp
-        return_rate = round(deff / sp * 100)
+        start_price = float(row[0])
+        deff = float(current_price) - start_price
+        return_rate = round(deff / start_price * 100, 1)
         
         return return_rate
 
@@ -138,7 +137,7 @@ if __name__ == '__main__':
     rows = load_stocks()
     set_current_prices(rows)
     check_price()
-    print("aaa")
+    print(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 
 # def get_code_db():

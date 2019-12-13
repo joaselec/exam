@@ -101,9 +101,9 @@ def get_returns(current_price, code):
         sql = "select start_price from stock_stocks where stock_code = ?"
         cur.execute(sql, (code,))              
         row = cur.fetchone()
-        sp = int(row[0])
-        deff = float(current_price) - sp
-        return_rate = round(deff / sp * 100)
+        start_price = float(row[0])
+        deff = float(current_price) - start_price
+        return_rate = round(deff / start_price * 100, 1)
         
         return return_rate
 
