@@ -22,6 +22,7 @@
                             <strong>종목</strong>
                             <input type="text" id="stock_id" name="stock_id" placeholder="종목명">
                             <input type="text" id="purchase_price" name="purchase_price" placeholder="매입가">
+                            <input type="text" id="push_return_rate" name="purchase_price" placeholder="매입가">
                             <button class="btn btn-default" id='add_stock' name='add_stock'>추가</button>
                             <!--
                             <button class="btn btn-default" id='del_stock' name='del_stock0'>삭제</button>
@@ -81,6 +82,12 @@
                 alert("삭제하였습니다.");
             });
         });
+
+        function remove_decimalpoint(data){
+            var result = data.substr(0,data.length-2)
+            //idx = data.indexOf(".")
+            return result
+        }
 
         //삭제버튼
         // $(document).on("click","button[id=del_stock]",function(){             

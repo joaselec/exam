@@ -80,6 +80,7 @@ def set_current_prices(stock_list):
         for code in stock_list:
             k = get_price(code)
             current_price = k["tradePrice"].to_string(index = False)
+            current_price = current_price[:-2]
             return_rate = get_returns(current_price, code)
             update_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             sql = "update stock_stocks set current_price = (?), stock_returns = (?), update_date = (?) where stock_code = (?);"
