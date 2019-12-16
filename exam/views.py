@@ -68,15 +68,16 @@ def download(request):
             response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
 
     finally:
-        conn.close()
+        if conn:
+            conn.close()
         
 
     return response
 
 def statics_false(request):
     try:
-        if request.user.has_perm('test'):
-            print("has perm")
+        # if request.user.has_perm('test'):
+        #    print("has perm")
         user_name = request.user.username
         conn = sqlite3.connect("first.db")
         cur = conn.cursor()
@@ -101,7 +102,8 @@ def statics_false(request):
             "posts" : posts,
         }
     finally:
-        conn.close()
+        if conn:
+            conn.close()
     
     return render(request, "statics_false.html", context)
 
@@ -170,7 +172,8 @@ def data(request):
         #     ]
         # }
     finally:
-        conn.close()
+        if conn:
+            conn.close()
     return HttpResponse(json.dumps(data),content_type="text/json")
     # return HttpResponse({
     #     'rate': json.dumps(data),
@@ -256,7 +259,8 @@ def getExample(request):
         }
 
     finally:
-        conn.close()
+        if conn:
+            conn.close()
 
     return render(request, "exam.html", context)
 
@@ -281,7 +285,8 @@ def getTitleContent(request):
     #except:
 
     finally:
-        conn.close()
+        if conn:
+            conn.close()
 
 
 
@@ -320,7 +325,8 @@ def sendResult(request):
 
     #result(select_id=select_id, title_id = title_id, example_id=example_id, session_id=session_id, user_name=user_name, date=date, check_yn=check_yn).save()
     finally:
-        conn.close()
+        if conn:
+            conn.close()
 
     return JsonResponse({
     }, json_dumps_params = {'ensure_ascii': True})
