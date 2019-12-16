@@ -84,6 +84,7 @@ def add_stock(request):
     except:
         if conn:
             conn.rollback
+            
     finally:
         if conn:
             conn.close()
