@@ -79,12 +79,11 @@ def add_stock(request):
 
         cur.execute(sql,(code, stock_name, purchase_price))
         conn.commit()
-
         test()
     except:
         if conn:
             conn.rollback
-            
+
     finally:
         if conn:
             conn.close()
