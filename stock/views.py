@@ -81,7 +81,7 @@ def add_stock(request):
         conn.commit()
 
         test()
-    except sqlite3.Error, e:
+    except:
         if conn:
             conn.rollback
     finally:
