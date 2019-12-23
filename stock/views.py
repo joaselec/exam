@@ -23,7 +23,8 @@ def stock(request):
         sql = "select * from stock_stocks"
         cur.execute(sql)
         posts = cur.fetchall()
-
+        #posts.sort()
+        posts.sort(key = lambda element : element[5], reverse=True)
         context = {        
             "posts" : posts,        
         }
